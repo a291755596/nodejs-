@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<style>
+    #area {
+        width: 500px;
+        height: 800px;
+        border: 2px dotted #000;
+        border-radius: 10px;
+        outline: none;
+    }
+    
+    #text {
+        width: 400px;
+        height: 50px;
+        border-radius: 10px;
+        outline: none;
+        border: 1px solid #000;
+        font-size: 25px;
+        color: #ccc;
+    }
+    
+    #btn {
+        width: 100px;
+        height: 50px;
+        background: #f00;
+        border-radius: 10px;
+        border: none;
+        color: #fff;
+        margin: 10px 10px;
+    }
+</style>
+
+
+
+<body>
+    <ul id="area"></ul>
+    <div>
+        <input type="text" id="text">
+        <input type="button" value="发送" id="btn">
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var prompt = prompt("请输入你的姓名")
+        var socket = io()
+
+        // 点击给服务端发送消息
+        document.getElementById("btn").onclick = function() {
+            if (prompt == null) {
+                prompt = prompt("请输入你的姓名")
+            } else {
+                // 使用socket.emit的方法往服务端发送消息
+                socket.emit("test", prompt + ":" + document.getElementById("text").value)
+                document.getElementById("text").value = ""
+            }
+        }
+
+        // 从服务器接收回来信息,并且把他放到textarea里面去
+        socket.on("huida", function(msg) {
+            console.log(msg)
+            var li = document.createElement("li");
+            li.innerHTML = CurentTime() + "<br>" + msg;
+            // 获取到textarea的文本
+            var area = document.getElementById("area")
+            area.appendChild(li)
+        })
+
+
+        function CurentTime() {
+            var now = new Date();
+            var year = now.getFullYear(); //年
+            var month = now.getMonth() + 1; //月
+            var day = now.getDate(); //日
+            var hh = now.getHours(); //时
+            var mm = now.getMinutes(); //分
+            var clock = year + "-";
+            if (month < 10)
+                clock += "0";
+            clock += month + "-";
+            if (day < 10)
+                clock += "0";
+            clock += day + " ";
+            if (hh < 10)
+                clock += "0";
+            clock += hh + ":";
+            if (mm < 10) clock += '0';
+            clock += mm;
+            return (clock);
+        }
+    </script>
+</body>
+
+</html>

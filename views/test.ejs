@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+
+
+
+<body>
+    <!-- 
+        ejs模板的三种形式
+            <% code %>：JavaScript 代码。
+            <%= code %>：显示替换过 HTML 特殊字符的内容。
+            <%- code %>：显示原始 HTML 内容。 
+    -->
+
+    <h1>这是一个测试文件</h1>
+    <ul>
+        <% for(var i = 0; i<news.length; i++){%>
+            <li>
+                <%=news[i]%>
+            </li>
+
+            <% } %>
+    </ul>
+</body>
+
+</html>

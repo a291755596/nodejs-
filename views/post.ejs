@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- form表单提交的数据 -->
+    <!-- <form action="/dopost" method="post">
+        <input type="text" name="name">
+        <input type="text" name="age">
+
+        <input type="submit">
+    </form> -->
+
+    <!-- ajax提交的数据 -->
+    <input type="text" id="name">
+    <input type="text" id="age">
+
+    <button value="提交" id="btn">提交</button>
+
+    <script src="/js/jquery.js"></script>
+    <script>
+        $("#btn").click(function() {
+            var data = {
+                "name": $("#name").val(),
+                "age": $("#age").val()
+            }
+
+            $.post("/dopost", data, function(result) {
+                console.log(result)
+                if (result == "success") {
+                    alert("数据提交成功")
+                }
+            })
+        })
+    </script>
+
+</body>
+
+</html>

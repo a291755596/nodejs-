@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<style>
+    #success,
+    #unsuccess {
+        display: none;
+    }
+</style>
+
+<body>
+    <!-- 留言本功能 -->
+    <h1>我的留言本</h1>
+    <div class="container">
+        <div class="row">
+            <form class="form-horizontal col-lg-6">
+                <div class="form-group">
+                    <label for="xingming" class="col-sm-2 control-label">姓名</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="姓名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="liuyan" class="col-sm-2 control-label">留言</label>
+
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" name="cont" id="cont"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button id="send" type="button" class="btn btn-success">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="alert alert-success" role="alert" id="success">
+            <a href="#" class="alert-link">表单已经成功提交</a>
+        </div>
+        <div class="alert alert-danger" role="alert" id="unsuccess">
+            <a href="#" class="alert-link">表单提交失败</a>
+        </div>
+
+
+
+        <!-- 所有留言 -->
+        <div id="quanbuliuyan"></div>
+        <!-- 分页，从后台加载数据 -->
+        <nav>
+            <ul class="pagination">
+                <% for(var i = 1 ; i <= pageamount ; i++){%>
+                    <li class="yemaanniu" data-page="<%=i%>">
+                        <a href="#">
+                            <%=i%>
+                        </a>
+                    </li>
+                    <%}%>
+            </ul>
+        </nav>
+
+    </div>
+
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        // 点击切换页面
+        var newpage = 1;
+
+        // 默认选中第一个元素
+        $(".yemaanniu:first").addClass("active");
+
+        // 给页面按钮添加点击事件
+        $(".yemaanniu").click(function() {
+            // 获取到每个按钮的独有属性，然后赋值给newpage
+            newpage = parseInt($(this).attr("data-page"))
+
+            // 每点击一下，调用一下getdata的函数，并且把页面传给函数
+            getData(newpage)
+
+            // 在做一个tab选项卡
+            $(this).addClass("active").siblings().removeClass("active")
+        })
+
+        // 页面进入加载留言的内容,传入页码进行分页
+        getData(1)
+
+        function getData(page) {
+            // 默认的排序页是从0开始的
+            // 获取留言板的内容，通过传递的参数，来进行分页
+            $.get("/read?page=" + (page - 1), function(result) {
+                console.log(result)
+                $("#quanbuliuyan").html('')
+                for (var i = 0; i < result.result.length; i++) {
+                    $("#quanbuliuyan").append('<div class="liuyankuai"><p>【姓名】' + result.result[i].name + '</p><p>【留言】' + result.result[i].cont + '</p><p>【时间】' + result.result[i].tiem + '</p><p><a href="/delete?id=' + result.result[i]._id + '" class="shanchu">删除</a></p></div>')
+                }
+            })
+        }
+
+        // 提交留言
+        $("#send").click(function() {
+            // 获取到内容
+            var data = {
+                name: $("#name").val(),
+                cont: $("#cont").val()
+            }
+
+            console.log(data)
+            $.post("/send", data, function(result) {
+                if (result.result == 1) {
+                    $("#success").fadeIn(300)
+                    $("#name").val('')
+                    $("#cont").val('')
+                        // 提交成功后拼接一个假的数据
+                    $('<div class="liuyankuai"><p>【姓名】' + data.name + '</p><p>【留言】' + data.cont + '</p><p>【时间】' + new Date() + '</p><p><a href="/delete?id=' + result.result[i]._id + '" class="shanchu">删除</a></p></div>').insertBefore("#quanbuliuyan")
+                    setInterval(function name(params) {
+                        $("#success").hide()
+                    }, 1000)
+                } else {
+                    $("#unsuccess").fadeIn(300)
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>注册</h1>
+    <p>
+        <input type="text" id="name">
+    </p>
+
+    <p>
+        <input type="password" id="password">
+    </p>
+    <input type="button" value="注册" id="reg">
+
+    <script src="/js/jquery.js"></script>
+    <script>
+        $("#reg").click(() => {
+            var data = {
+                username: $("#name").val(),
+                password: $("#password").val()
+            }
+
+            $.get("/reg", data, (result) => {
+                if (result.result == 1) {
+                    alert("恭喜你注册成功")
+                    window.location.href = "/login"
+                } else {
+                    alert("注册失败")
+                }
+            })
+        })
+    </script>
+
+</body>
+
+</html>

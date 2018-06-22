@@ -1,0 +1,42 @@
+1、起步——使用原生nodejs实现一个helloworld
+    (1)了解引包的概念，并创建一个服务器，监听3000端口
+    (2)返回需要设置http的头部，并且设置状态码是200，文件类型是html，字符集是utf8
+        res.writeHead(200, { "Content-type": "text/html;chartset=utf-8" })
+    (3)必须要有一个res.end
+
+2、res.write的使用res.write("<h1>这是一个标题</h1>")
+3、引入url模块，以及url模块的使用
+    // url.hash 获取浏览器地址#号后面的内容
+    // url.host 获取主机名地址，含端口号
+    // url.hostname 获取主机名地址，不含端口号
+    // url.href 获取序列化的地址    https://example.org/foo
+    // url.origin 获取只读序列化的URL origin部分    输出 https://example.org
+    // url.pathname 获取及设置URL的路径(path)部分   https://example.org/abc/xyz?123 ==>/abc/xyz
+    // url.port 获取主机名端口号    https://example.org:8888 ==>8888
+    // url.protocol 获取主机名协议  http或者https
+    // url.search URL的序列化查询(query)部分    https://example.org/abc?123 ==>?123
+
+4、fs模块的使用，通过fs模块进行新建、读取、检测状态以及检测是否是文件夹或者文件等方法
+5、获取一个文件夹中的文件夹名，readdir的使用和异步不能使用for循环来遍历文件夹的解决方法
+6、nodejs中是不存在静态资源目录,通过原生nodejs实现一个静态资源管理器
+7、原生nodejs的路由演示
+8、原生nodejs中的post请求
+9、使用formidable插件进行文件上传功能的实现
+10、express的使用
+    【1】express的安装
+    【2】express设置静态资源管理器,使用use中间件
+    【3】express使用ejs模板,可以不用引包,但是必须得有这个包
+    【4】当路由访问任何路径的时候返回
+    【5】通过get传参过来的参数,可以通过req.params来拿到
+    【6】ejs的简单使用
+    【7】中间件next的使用
+    【8】express的post的使用,需要使用一个插件body-parser
+11、mongodb数据库的连接
+12、用数据库实现一个商品管理系统
+13、使用DAO的思想，对数据库进行封装，并且完成一个商品管理系统
+14、使用数据库实现一个留言板功能，并分页
+15、cookie的猜你喜欢 引入一个parser
+16、session实现用户的登陆
+17、websocket的初步使用
+18、websocket制作一个简易的聊天室
+19、websocket制作一个简易的你画我猜
