@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>send</title>
+</head>
+
+<body>
+    <input type="text" placeholder="请输入手机号" id="tel">
+    <button id="send">发送验证码</button>
+
+</body>
+
+<script src="/js/jquery.js"></script>
+<script>
+    $("#send").click(function() {
+        var data = {
+            tel: $("#tel").val()
+        }
+
+        $.post("/sendmessage", data, function(result) {
+            console.log(result)
+            if (result.code == 0) {
+                alert(result.msg)
+            }
+        })
+
+    })
+</script>
+
+</html>
