@@ -17,6 +17,7 @@ app.get("/", function(req, res, next) {
 })
 
 app.post("/sendmessage", function(req, res, next) {
+    var msg = ''
     var num = random()
     var form = new formidable.IncomingForm();
     form.parse(req, function(err, fields) {
@@ -24,13 +25,14 @@ app.post("/sendmessage", function(req, res, next) {
         var mobile = fields.tel;
         var send_sms_uri = '/v2/sms/single_send.json';
         var text = '【王刚G】您的验证码是' + num + '。如非本人操作，请忽略本短信';
-        send_sms(send_sms_uri, apikey, mobile, text);
-
+        send_sms(send_sms_uri, apikey, mobile, text, function(data) {
+            res.json(data)
+        });
     })
 })
 
 // 调用发送短信验证码的接口
-function send_sms(uri, apikey, mobile, text) {
+function send_sms(uri, apikey, mobile, text, fn) {
     var sms_host = 'sms.yunpian.com';
     var post_data = {
         'apikey': apikey,
@@ -38,12 +40,14 @@ function send_sms(uri, apikey, mobile, text) {
         'text': text,
     }; //这是需要提交的数据  
     var content = qs.stringify(post_data);
-    post(uri, content, sms_host);
+    post(uri, content, sms_host, function(data) {
+        fn != undefined && fn(data);
+    });
 }
 
 
 // 向一个安全的服务器发送请求，并且请求数据
-function post(uri, content, host) {
+function post(uri, content, host, fn) {
     let data = '';
     var options = {
         hostname: host,
@@ -55,10 +59,14 @@ function post(uri, content, host) {
         }
     };
     var req = https.request(options, function(resq) {
+        var _msg = ''
         resq.setEncoding('utf8');
         resq.on('data', function(chunk) {
-            console.log(chunk)
-            data += chunk;
+            _msg += chunk;
+        });
+
+        resq.on('end', function() {
+            fn != undefined && fn(_msg);
         });
     });
 
